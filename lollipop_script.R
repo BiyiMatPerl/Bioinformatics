@@ -1,3 +1,4 @@
+# CREATES LOLLIPOP PLOT
 # setwd () set working directory.
 getwd()
 chooseCRANmirror(ind=1)
@@ -33,4 +34,5 @@ data_hgmd %>%
       coord_flip()
 
 ggsave("TPO_lollipop.jpg", dpi=600)
+dev.off()
 	
