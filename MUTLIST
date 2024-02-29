@@ -1,0 +1,44 @@
+# GENERATE ALL POSSIBLE MUTATIONS FROM A PROTEIN STRUCTURE USING ITS FASTA SEQUENCE
+
+#!/usr/bin/env python3
+# usage: MUTLIST.py [-h] [-p START_POS] [-c CHAIN] input_file output_file
+import argparse
+
+def parse_args():
+    parser = argparse.ArgumentParser(description='Convert protein fasta sequence to mutation list')
+    parser.add_argument('input_file', help='Path to input fasta file')
+    parser.add_argument('output_file', help='Path to output mutation list file')
+    parser.add_argument('-p', '--start_pos', type=int, default=1, help='Starting position for mutations (default: 1)')
+    parser.add_argument('-c', '--chain', default='A', help='Chain ID to use for the mutations.')
+    return parser.parse_args()
+
+def read_fasta(file):
+    fasta = {}
+    with open(file) as f:
+        seq = ''
+        header = None
+        for line in f:
+            line = line.strip()
+            if line.startswith('>'):
+                if header is not None:
+                    fasta[header] = seq
+                header = line[1:]
+                seq = ''
+            else:
+                seq += line
+        fasta[header] = seq
+    return fasta
+
+def write_mutations(seq, chainID, start_pos, output_file):
+    with open(output_file, 'w') as f:
+        for i in range(len(seq)):
+            pos = i + start_pos
+            for aa in ['A', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'K', 'L', 'M', 'N', 'P', 'Q', 'R', 'S', 'T', 'V', 'W', 'Y']:
+                if aa != seq[i]:
+                    f.write(f'{seq[i]}{args.chain}{pos}{aa};\n')
+
+if __name__ == '__main__':
+    args = parse_args()
+    fasta = read_fasta(args.input_file)
+    seq = fasta[list(fasta.keys())[0]]
+    write_mutations(seq, args.chain, args.start_pos, args.output_file)
