@@ -1,5 +1,6 @@
-setwd ("C:/Users/ADEBIYI/Documents/Howard Uni/Post_Doc_Fellow/Summer 2022/TPO")
+# setwd () set working directory.
 getwd()
+chooseCRANmirror(ind=1)
 library(tidyverse)
 install.packages("tidyverse")
 install.packages("hrbrthemes")
